@@ -6,6 +6,14 @@ import java.time.LocalDate;
 
 public class CalculadoraIrpf {
 
+	/**
+	 * Método para calcular el IRPF
+	 *
+	 * @param fechaNacimiento usada para calcular la edad de la persona
+	 * @param numeroHijos     cantidad de hijos que tiene esa persona
+	 * @param salario         Salario bruto anual
+	 * @return retención del IRPF a practicar con los datos introducidos
+	 */
 	public BigDecimal calcularIrpf(LocalDate fechaNacimiento,
 								   BigDecimal numeroHijos, BigDecimal salario) {
 
@@ -25,6 +33,12 @@ public class CalculadoraIrpf {
 
 	}
 
+	/**
+	 * Calcula la base imponible a partir del salario
+	 *
+	 * @param salario bruto anual
+	 * @return base imponible para un salario dado
+	 */
 	private BigDecimal calcularBaseImponible(BigDecimal salario) {
 		BigDecimal deduccionesTrabajo = Deducciones.RENDIMIENTOS_TRABAJO;
 		BigDecimal deduccionesSeguridadSocial =
@@ -38,6 +52,13 @@ public class CalculadoraIrpf {
 		return baseImponible;
 	}
 
+	/**
+	 * Devuelve el mínimo personal a partir de la edad de la persona
+	 *
+	 * @param fechaNacimiento     usada para calcular la edad
+	 * @param tablaMinimoPersonal tabla de deduciones por minimo personal
+	 * @return mínimo personal calculado
+	 */
 	private BigDecimal calcularMinimoPersonal(LocalDate fechaNacimiento, Deducciones[] tablaMinimoPersonal) {
 		BigDecimal edad = BigDecimal.valueOf(LocalDate.now().getYear() - fechaNacimiento.getYear());
 		BigDecimal deduccionMinimoPersonal = BigDecimal.ZERO;
@@ -51,6 +72,13 @@ public class CalculadoraIrpf {
 		return deduccionMinimoPersonal;
 	}
 
+	/**
+	 * Devuelve la deducción por la cantidad de hijos
+	 *
+	 * @param numeroHijos                 cantidad de hijos de una persona
+	 * @param deduccionesPorDescendientes tabla donde aparecen las deducciones según el número de hijos
+	 * @return deducción por número de hijos calculada
+	 */
 	private BigDecimal calcularDeduccionDescendientes(BigDecimal numeroHijos,
 													  Deducciones[] deduccionesPorDescendientes) {
 		BigDecimal totalDeduccion = BigDecimal.ZERO;
@@ -64,6 +92,13 @@ public class CalculadoraIrpf {
 		return totalDeduccion;
 	}
 
+	/**
+	 * Calcula la retención facilitándole una cantidad y la tabla de retenciones
+	 *
+	 * @param cantidad        de dinero sobre el que se quiere aplicar la retención
+	 * @param tramosRetencion Tabla con los porcentajes de retención que se aplica en cada tramo
+	 * @return retención practicada para una cantidad concreta
+	 */
 	private BigDecimal calcularRetencion(BigDecimal cantidad, TramosIrpf[] tramosRetencion) {
 		BigDecimal cantidadRetenidaTotal = BigDecimal.ZERO;
 		BigDecimal cantidadRestante = cantidad;
